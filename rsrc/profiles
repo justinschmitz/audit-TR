@@ -1,0 +1,25 @@
+{
+    "profiles": [
+	{    
+	    "profile": "id_0", 
+	    "pname": "name",
+	    "tasks": [
+		{
+		    "task":"id_0_procedure_001",
+		    "schedule": "on_date_at_time"
+		}
+	    ]
+	},
+
+	{
+	    "profile": "id_1",
+	    "pname": "name",
+	    "tasks": [
+		{
+		    "task": "id_1_procedure_001",
+		    "schedule": "on_date_at_time"
+		}
+	    ]
+	}
+    ]
+}
