@@ -1,40 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "at_profiles.h"
 
 task_t
 create_new_task(const char *name, const size_t priority)
 {
+  // Our task to be created
   task_t task;
+  // standard memory index for iterations
   size_t memory_address_index;
+  // our allocation for a single task
   size_t task_allocation_size;
+  // incoming length of task name
   size_t incoming_name_length;
-
+  // set length of incoming task name
+  // abort if the size is to big 
   incoming_name_length = strlen(name);
   if (incoming_name_length > TASK_NAME_ALLOC_SIZE)
     abort();
-  
-  task_allocation_size = (sizeof(task) + TASK_NAME_ALLOC_SIZE);
-
+  // perform the calculation for allocation
+  task_allocation_size = (sizeof(*task) + TASK_NAME_ALLOC_SIZE);
+  // perform the allocation and ensure that it
+  // was successfully
   task = (task_t) malloc(task_allocation_size);
   if (task == NULL)
     abort();
-
+  // set initialize index to zero and begin
+  // setting the name to all nul
   memory_address_index = 0;
   for(; memory_address_index < TASK_NAME_ALLOC_SIZE; memory_address_index++)
     task->task_name[memory_address_index] = '\0';
-
+  // copy the contents of the incoming task name
+  // to this task task name
   memory_address_index = 0;
   for(; memory_address_index < TASK_NAME_ALLOC_SIZE; memory_address_index++)
     task->task_name[memory_address_index] = name[memory_address_index];
-  
-  task->task_priority = priority;
-  
+  task->task_priority = (size_t)priority;
+  // reset used local variables to 0 
   memory_address_index = 0;
   task_allocation_size = 0;
-  
+  // rturn our task
   return task;
 }
 
@@ -91,7 +99,7 @@ create_new_profile()
   // used to store the size of our profile
   size_t profile_allocation_size; 
   // initialize the size of profile allocation to sizeof profile and pname default size
-  profile_allocation_size = ( sizeof(profile) + PROFILE_NAME_ALLOC_SIZE );
+  profile_allocation_size = ( sizeof(*profile) + PROFILE_NAME_ALLOC_SIZE );
   // perform the memory allocation: should be 136 Bytes based on pname: 128 bytes
   // and profile_t pname size is 8 bytes
   profile = (profile_t) malloc(profile_allocation_size);
@@ -111,7 +119,7 @@ create_new_profile()
   profile_allocation_size = 0;
   // return profile to caller
   return profile;
-}
+} // end create_new_profile
 
 void
 free_profile(profile_t profile)
@@ -168,16 +176,13 @@ void
 delete_profile(profile_t profile) {
   // TODO: Won't be ready until the json profile parser
   //       is ready
-}
+} // end delete_profile
 
 // Task_Queue
 task_node_t
 create_task_node(const task_t task) {
   // task_container is the return task node object
   task_node_t task_container;
-  // incoming_task_memory_size will be set to the
-  // sizeof(task)
-  size_t incoming_task_memory_size;
   // task_node_allocation_size represents
   // the total size of allocation for a task_node
   size_t task_node_allocation_size;
@@ -185,16 +190,16 @@ create_task_node(const task_t task) {
   // abort if task is null
   if (task == NULL)
     abort();
+
   // otherwise begin size allocation
-  incoming_task_memory_size = sizeof(task);
-  task_node_allocation_size = (incoming_task_memory_size + sizeof(task_container) + \
-			       (sizeof(task_node_t)));
+  task_node_allocation_size = (sizeof(*task)		\
+			      +sizeof(*task_container)	\
+			      +sizeof(task_node_t));
   // attempt to allocate memory for task_container with task_node_allocation_size
   task_container = (task_node_t) malloc(task_node_allocation_size);
   // if the allocation fails, set used local variables back to
   // 0 and abort operation
   if (task_container == NULL) {
-    incoming_task_memory_size = 0;
     task_node_allocation_size = 0;
     abort();
   }
@@ -204,19 +209,17 @@ create_task_node(const task_t task) {
   task_container->next_node = NULL;
   // ensure local variables are zero'd out before
   // returning to caller
-  incoming_task_memory_size = 0;
   task_node_allocation_size = 0;
   // print indicates success of task_container allocation and assignment
-  printf("added task: %s successfully\n", task_container->task->task_name);
-
+  // printf("added task: %s successfully\n", task_container->task->task_name);
   // return to caller task_container
   return task_container;
 }
 
 void
-free_task_node(task_node_t tnode) {
-  if (tnode == NULL)
+free_task_node(task_node_t task_node) {
+  if (task_node == NULL)
     abort();
 
-  free ( tnode );
+  free ( task_node );
 }

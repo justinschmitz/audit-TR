@@ -7,30 +7,10 @@
 int
 main(int argc, char *argv[])
 {
-  profile_list_t profiles;
-  profile_t profile;
-
-  task_t task;
-  task_node_t tnode;
+  profile_list_t profile_list;
+  profile_list = initialize_profile_array();
   
-  profile = create_new_profile();
-  set_profile_name("profile_test_001", profile);
-  printf("%s\n", profile->profile_name);
-
-  task = create_new_task("task_test_001", 1);
-  printf("%s\n", task->task_name);
-
-  tnode = create_task_node(task);
-  profiles = initialize_profile_array();
-
-  *profiles[0] = profile;
-
-  printf("profile: %s\n", (*profiles[0])->profile_name);
-  
-  free_task(task);
-  free_task_node(tnode);
-  free_profiles(profiles);
-  
+  free_profiles(profile_list);
   return 0;
 }
 

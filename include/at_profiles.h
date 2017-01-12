@@ -9,8 +9,6 @@
 #define PROFILE_NAME_ALLOC_SIZE    128
 #define PROFILE_MAX_STORAGE_SIZE   32
 
-#define null (void *) 0UL
-
 struct __task_t;
 struct __task_node_t;
 struct __task_manager_t;
@@ -20,7 +18,7 @@ typedef struct __task_t *task_t;
 typedef struct __task_t {
   char task_name[TASK_NAME_ALLOC_SIZE];
   size_t task_priority;
-  time_t last_task_run_time;
+  time_t last_run_time;
 } TASK_T;
 
 typedef struct __task_node_t *task_node_t;
@@ -43,9 +41,7 @@ typedef struct __profile_t {
 } PROFILE_T;
 
 // simple storage of profiles
-// __profile_t->__profile_list[SIZE]
 typedef profile_t __profile_list[PROFILE_MAX_STORAGE_SIZE];
-// __profile_list->__profile_t->__profile_list[SIZE]
 typedef __profile_list *profile_list_t;
 
 //
@@ -89,8 +85,11 @@ extern void add_task_to_profile(profile_t, task_t);
 // --------------------------------------------------------------
 //
 extern task_node_t create_task_node(const task_t);
+//
 extern void free_task_node(task_node_t);
+//
 extern void enqueue_task_node(const task_node_t);
+//
 extern void dequeue_task_node(const task_node_t);
 
 #endif
