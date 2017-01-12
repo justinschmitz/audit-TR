@@ -51,21 +51,33 @@ profile_list_t
 initialize_profile_array(void)
 {
   profile_list_t profile_list;
+  size_t memory_address_index;
   
-  profile_list = (profile_list_t) malloc ((sizeof(__profile_list) + \
-					   PROFILE_MAX_STORAGE_SIZE));
+  profile_list = (profile_list_t) malloc (PROFILE_MAX_STORAGE_SIZE \
+					  * sizeof(*profile_list));
   if (profile_list == NULL)
     abort();
 
+  memory_address_index = 0;
+  for (; memory_address_index < PROFILE_MAX_STORAGE_SIZE; memory_address_index++)
+    (*profile_list[memory_address_index]) = NULL;
+  
   return profile_list;  
 }
 
 void
 free_profiles(profile_list_t profile_list)
 {
+  size_t memory_address_index;
+  
   if (profile_list == NULL)
     abort();
 
+  memory_address_index = 0;
+  for (; memory_address_index < PROFILE_MAX_STORAGE_SIZE; memory_address_index++) 
+    if ((*profile_list[memory_address_index]) != NULL)
+  	free((*profile_list[memory_address_index]));
+  
   free ( profile_list );
 }
 

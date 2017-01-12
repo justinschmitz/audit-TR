@@ -29,7 +29,6 @@ main(int argc, char *argv[])
   
   free_task(task);
   free_task_node(tnode);
-  free_profile(profile);
   free_profiles(profiles);
   
   return 0;

@@ -7,7 +7,9 @@
 #define TASK_NAME_ALLOC_SIZE       64
 #define TASK_LIST_ALLOC_SIZE       256
 #define PROFILE_NAME_ALLOC_SIZE    128
-#define PROFILE_MAX_STORAGE_SIZE   256
+#define PROFILE_MAX_STORAGE_SIZE   32
+
+#define null (void *) 0UL
 
 struct __task_t;
 struct __task_node_t;
